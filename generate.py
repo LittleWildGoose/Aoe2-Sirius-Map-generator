@@ -1,5 +1,6 @@
 from AoE2ScenarioParser.scenarios.aoe2_de_scenario import AoE2DEScenario
-from utils import generateTrees, generateBound
+from utils import *
+from FFA_v0 import *
 
 input_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\blank.aoe2scenario"
 
