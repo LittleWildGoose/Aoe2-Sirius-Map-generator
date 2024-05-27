@@ -38,12 +38,12 @@ def addBound(map_manager, trigger, x ,y, itemToAdd, sourcePlayer):
     )
 
 
-def addAny(map_manager, trigger, x ,y, itemId, x_offSet =0, y_offSet =0,directX =1, directY =1):
+def addAny(map_manager, trigger, x ,y, itemId, x_offSet =0, y_offSet =0,directX =1, directY =1, player = EARTH_MOTHER):
     tile = map_manager.get_tile(directX*x+x_offSet, directY*y+y_offSet)
     tile.terrain_id = TerrainId.FOREST_PINE
     trigger.new_effect.create_object(
         object_list_unit_id=itemId,
-        source_player=EARTH_MOTHER,
+        source_player=player,
         location_x=directX*x+x_offSet,
         location_y=directY*y+y_offSet,
     )

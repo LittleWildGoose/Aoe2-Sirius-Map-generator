@@ -30,7 +30,7 @@ assert len(BOUND_AREA_X1_LIST) == len(BOUND_AREA_X2_LIST)
 assert len(BOUND_AREA_X1_LIST) == len(BOUND_AREA_Y1_LIST)
 assert len(BOUND_AREA_X1_LIST) == len(BOUND_AREA_Y2_LIST)
 
-def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1):
+def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1, player =EARTH_MOTHER):
 
     TC_CENTER_X = 35
     TC_CENTER_Y = 45
@@ -60,10 +60,10 @@ def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1):
         changeElevation(map_manager, x +19 , i-10, 1, xOffset, yOffSet,directX,directY)
         changeElevation(map_manager, x +21 , i-10, 1, xOffset, yOffSet,directX,directY)
 
-    addAny(map_manager, trigger, 0, 0, TC_ID,xOffset, yOffSet)
-    addAny(map_manager, trigger, 0, 1, VIL_ID,xOffset, yOffSet)
-    addAny(map_manager, trigger, 0, 2, VIL_ID,xOffset, yOffSet)
-    addAny(map_manager, trigger, 0, 3, VIL_ID,xOffset, yOffSet)
+    addAny(map_manager, trigger, 0, 0, TC_ID,xOffset, yOffSet,1,1,player)
+    addAny(map_manager, trigger, 0, 1, VIL_ID,xOffset, yOffSet,1,1,player)
+    addAny(map_manager, trigger, 0, 2, VIL_ID,xOffset, yOffSet,1,1,player)
+    addAny(map_manager, trigger, 0, 3, VIL_ID,xOffset, yOffSet,1,1,player)
     addPig(map_manager, trigger, 0, 4,xOffset, yOffSet)
     addPig(map_manager, trigger, 0, 5,xOffset, yOffSet)
 
@@ -245,24 +245,24 @@ for player in range(1,9):
 
 
 
-onePlayerBlock(0,0,1,1)
+onePlayerBlock(0,0,1,1, 1)
 
-onePlayerBlock(60,0,-1,-1)
-
-
-onePlayerBlock(BOUND_START + BOUND_WIDTH,0,1,1)
-
-onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,0,-1,-1)
+onePlayerBlock(60,0,-1,-1, 2)
 
 
-onePlayerBlock(0,MAP_SIZE-LEFT_SIZE,1,1)
+onePlayerBlock(BOUND_START + BOUND_WIDTH,0,1,1,5 )
 
-onePlayerBlock(60,MAP_SIZE-LEFT_SIZE,-1,-1)
+onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,0,-1,-1,6)
 
 
-onePlayerBlock(BOUND_START + BOUND_WIDTH ,MAP_SIZE-LEFT_SIZE,1,1)
+onePlayerBlock(0,MAP_SIZE-LEFT_SIZE,1,1,3)
 
-onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,MAP_SIZE-LEFT_SIZE,-1,-1)
+onePlayerBlock(60,MAP_SIZE-LEFT_SIZE,-1,-1,4)
+
+
+onePlayerBlock(BOUND_START + BOUND_WIDTH ,MAP_SIZE-LEFT_SIZE,1,1,7)
+
+onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,MAP_SIZE-LEFT_SIZE,-1,-1,8)
 
 generateBound()
 scenario.write_to_file(output_path)
