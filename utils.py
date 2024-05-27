@@ -22,9 +22,14 @@ INIT_DEER = 4
 BOUND_ID = 857
 EARTH_MOTHER = 9
 
+def changeElevation	(map_manager, x ,y,elevation, x_offSet =0, y_offSet =0,directX =1, directY =1):
+    tile = map_manager.get_tile(directX*x+x_offSet, directY*y+y_offSet)
+    tile.elevation = elevation
+
+
 def addBound(map_manager, trigger, x ,y, itemToAdd, sourcePlayer):
     tile = map_manager.get_tile(x, y)
-    tile.terrain_id = TerrainId.BLACK if itemToAdd == BOUND_ID else TerrainId.FOREST_PINE
+    tile.terrain_id = TerrainId.ROAD if itemToAdd == BOUND_ID else TerrainId.FOREST_PINE
     trigger.new_effect.create_object(
         object_list_unit_id=itemToAdd,
         source_player=sourcePlayer,
@@ -61,3 +66,6 @@ def addDeer(map_manager, trigger, x ,y, x_offSet =0, y_offSet =0,directX =1, dir
 
 def addFruit(map_manager, trigger, x ,y, x_offSet =0, y_offSet =0,directX =1, directY =1):
     addAny(map_manager, trigger, x ,y, FRUIT_ID, x_offSet, y_offSet,directX,directY)
+
+def addPig(map_manager, trigger, x ,y, x_offSet =0, y_offSet =0,directX =1, directY =1):
+    addAny(map_manager, trigger, x ,y, PIG_ID, x_offSet, y_offSet,directX,directY)

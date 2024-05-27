@@ -11,14 +11,14 @@ output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\
 
 INIT_DEER =3 
 
-BOUND_START = 120
+BOUND_START = 130
 BOUND_WIDTH = 20
 MAP_SIZE = 280 
 
-BLOCK_SIZE = 80
+ROUND_ONE_LIMIT = 90
+ONE_MINUTE = 60
 
-TREE_SQUARE = 5
-
+LEFT_SIZE =90
 
 BOUND_AREA_X1_LIST =[0,0,BOUND_START+BOUND_WIDTH,BOUND_START+BOUND_WIDTH]
 BOUND_AREA_X2_LIST =[BOUND_START,BOUND_START,MAP_SIZE,MAP_SIZE]
@@ -32,8 +32,8 @@ assert len(BOUND_AREA_X1_LIST) == len(BOUND_AREA_Y2_LIST)
 
 def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1):
 
-    TC_CENTER_X = 30
-    TC_CENTER_Y = 30
+    TC_CENTER_X = 35
+    TC_CENTER_Y = 45
     
     xOffset = xOffset+TC_CENTER_X
     yOffSet = yOffSet+TC_CENTER_Y
@@ -42,22 +42,30 @@ def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1):
 
     for x in range(10):
         for y in range(5):
-            addTree(map_manager, trigger, x-22, y -4 - x,xOffset, yOffSet,directX,directY)
+            addTree(map_manager, trigger, x-25, y -7 - x,xOffset, yOffSet,directX,directY)
 
 
     for x in range(10):
         for y in range(5):
-            addTree(map_manager, trigger, x-22 , y +6 + x,xOffset, yOffSet,directX,directY)
+            addTree(map_manager, trigger, x-25 , y +10 + x,xOffset, yOffSet,directX,directY)
 
 
     for x in range(5):
         for y in range(10):
             addTree(map_manager, trigger, x +15 , y -10,xOffset, yOffSet,directX,directY)
 
+
+    for i in range(10) :
+        changeElevation(map_manager, x +20 , i-10,2, xOffset, yOffSet,directX,directY)
+        changeElevation(map_manager, x +19 , i-10, 1, xOffset, yOffSet,directX,directY)
+        changeElevation(map_manager, x +21 , i-10, 1, xOffset, yOffSet,directX,directY)
+
     addAny(map_manager, trigger, 0, 0, TC_ID,xOffset, yOffSet)
     addAny(map_manager, trigger, 0, 1, VIL_ID,xOffset, yOffSet)
     addAny(map_manager, trigger, 0, 2, VIL_ID,xOffset, yOffSet)
     addAny(map_manager, trigger, 0, 3, VIL_ID,xOffset, yOffSet)
+    addPig(map_manager, trigger, 0, 4,xOffset, yOffSet)
+    addPig(map_manager, trigger, 0, 5,xOffset, yOffSet)
 
     for i in range(INIT_SHEEP) :
         addSheep(map_manager, trigger, -1 , i, xOffset, yOffSet)
@@ -75,19 +83,44 @@ def onePlayerBlock(xOffset, yOffSet, directX = 1 ,directY =1):
     for i in range(3) :
         for j in range(2) :
             addFruit(map_manager, trigger, 10 +j , i-15, xOffset, yOffSet,directX,directY)
+            changeElevation(map_manager, 15 +j , i-20, 1, xOffset, yOffSet,directX,directY)
+
 
     for i in range(4) :
         for j in range(2) :
             addGold(map_manager, trigger, 10 +i , j+5 -i , xOffset, yOffSet,directX,directY)
+            changeElevation(map_manager, 15 +i , j+10, 1, xOffset, yOffSet,directX,directY)
+
 
     for i in range(INIT_STONE) :
-        addStone(map_manager, trigger, -5 , i+15, xOffset, yOffSet,directX,directY)
+        addStone(map_manager, trigger, -5 -i , 15, xOffset, yOffSet,directX,directY)
 
+    for i in range(INIT_STONE) :
+        changeElevation(map_manager, -7 +i , 20,2, xOffset, yOffSet,directX,directY)
+        changeElevation(map_manager, -7 +i , 19, 1, xOffset, yOffSet,directX,directY)
+        changeElevation(map_manager, -7 +i , 21, 1, xOffset, yOffSet,directX,directY)
 
     for i in range(2) :
         for j in range(2) :
             addGold(map_manager, trigger, -10 +i , j-15 -i , xOffset, yOffSet,directX,directY)
 
+
+    for i in range(2) :
+        for j in range(2) :
+            addGold(map_manager, trigger, -30 +i , j-30 -i , xOffset, yOffSet,directX,directY)
+
+    for i in range(2) :
+        for j in range(2) :
+            addStone(map_manager, trigger, i , j-40 -i , xOffset, yOffSet,directX,directY)
+
+    for i in range(2) :
+        for j in range(2) :
+            addStone(map_manager, trigger, -30 +i , j+30 -i , xOffset, yOffSet,directX,directY)
+
+            
+    for i in range(2) :
+        for j in range(2) :
+            addGold(map_manager, trigger, i , j+40 -i , xOffset, yOffSet,directX,directY)
 
 def generateBound():
     trigger = trigger_manager.add_trigger(f"Spawn Bound")
@@ -101,11 +134,16 @@ def generateBound():
 
     for x in range(MAP_SIZE):
         for y in range(BOUND_WIDTH):
-            addBound(map_manager, trigger, x ,y +60, BOUND_ID, EARTH_MOTHER)
+            addBound(map_manager, trigger, x ,y + LEFT_SIZE, BOUND_ID, EARTH_MOTHER)
 
     for x in range(MAP_SIZE):
         for y in range(BOUND_WIDTH):
-            addBound(map_manager, trigger, x ,y +140, BOUND_ID, EARTH_MOTHER)
+            addBound(map_manager, trigger, x , MAP_SIZE - LEFT_SIZE -y, BOUND_ID, EARTH_MOTHER)
+
+    for y in range(16):
+        for x in range(MAP_SIZE):
+            if(x<BOUND_START or x >= BOUND_START + BOUND_WIDTH):
+                addBound(map_manager, trigger,  x , MAP_SIZE//2 - 8 +y, WALL_ID, y%8 +1)
 
 scenario = AoE2DEScenario.from_file(input_path)
 
@@ -125,6 +163,27 @@ for player in range(1,9):
         source_player=player,
     )
 
+for pos in range(1,5):
+    trigger = trigger_manager.add_trigger(f"Round One Limit" +str(pos))
+    trigger.looping=False
+    trigger.new_condition.timer(
+        timer=ROUND_ONE_LIMIT*ONE_MINUTE
+    )
+    trigger.new_condition.player_defeated(
+        source_player=pos*2,
+        inverted= True,
+    )
+    trigger.new_condition.player_defeated(
+        source_player=pos*2-1,
+        inverted= True,
+    )
+    trigger.new_effect.kill_object(
+        source_player=pos*2,
+    )
+    trigger.new_effect.kill_object(
+        source_player=pos*2-1,
+    )
+
 
 
 for player in range(1,9):
@@ -142,7 +201,8 @@ for player in range(1,9):
         area_x1 = BOUND_AREA_X1_LIST[(player-1)//2],
         area_x2 = BOUND_AREA_X2_LIST[(player-1)//2],
         area_y1 = BOUND_AREA_Y1_LIST[(player-1)//2],
-        area_y2 = BOUND_AREA_Y2_LIST[(player-1)//2]
+        area_y2 = BOUND_AREA_Y2_LIST[(player-1)//2],
+        object_list_unit_id=BOUND_ID,
     )
 
 
@@ -156,6 +216,14 @@ for player in range(1,9):
                 trigger.new_condition.player_defeated(
                     source_player=i,
                 )
+        trigger.new_effect.remove_object(
+            source_player=EARTH_MOTHER,
+            area_x1 = 0,
+            area_x2 = BOUND_START + BOUND_WIDTH //2,
+            area_y1 = 0,
+            area_y2 = MAP_SIZE,
+            object_list_unit_id=BOUND_ID,
+        )
     else:
         for i in range(5,9):
             if i != player:
@@ -163,14 +231,17 @@ for player in range(1,9):
                     source_player=i,
                 )
 
+        trigger.new_effect.remove_object(
+            source_player=EARTH_MOTHER,
+            area_x1 = BOUND_START + BOUND_WIDTH //2+1,
+            area_x2 = MAP_SIZE,
+            area_y1 = 0,
+            area_y2 = MAP_SIZE,
+            object_list_unit_id=BOUND_ID,
+        )
 
-    trigger.new_effect.remove_object(
-        source_player=EARTH_MOTHER,
-        area_x1 = 0,
-        area_x2 = BOUND_START + BOUND_WIDTH //2,
-        area_y1 = 0,
-        area_y2 = MAP_SIZE
-    )
+
+
 
 
 
@@ -179,19 +250,19 @@ onePlayerBlock(0,0,1,1)
 onePlayerBlock(60,0,-1,-1)
 
 
-onePlayerBlock(120,0,1,1)
+onePlayerBlock(BOUND_START + BOUND_WIDTH,0,1,1)
 
-onePlayerBlock(160,0,-1,-1)
-
-
-onePlayerBlock(0,160,1,1)
-
-onePlayerBlock(40,160,-1,-1)
+onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,0,-1,-1)
 
 
-onePlayerBlock(120,160,1,1)
+onePlayerBlock(0,MAP_SIZE-LEFT_SIZE,1,1)
 
-onePlayerBlock(160,160,-1,-1)
+onePlayerBlock(60,MAP_SIZE-LEFT_SIZE,-1,-1)
+
+
+onePlayerBlock(BOUND_START + BOUND_WIDTH ,MAP_SIZE-LEFT_SIZE,1,1)
+
+onePlayerBlock(BOUND_START + BOUND_WIDTH + 60,MAP_SIZE-LEFT_SIZE,-1,-1)
 
 generateBound()
 scenario.write_to_file(output_path)
