@@ -43,6 +43,7 @@ AGE_SIZE = 4
 RESOURCE_SIZE = 4
 
 UPLIMIT = 500
+POP_HEAD = 200
 displayStr = "自己杀死或者Del的单位不会消耗人口， 可用人口低于200之后会减少人口上限\n \n"
 for player in range(1,9):
     displayStr = displayStr + "玩家 " + str(player) + "还有 <Variable " +str(player)+">\n"
@@ -88,6 +89,7 @@ for player in range(1,9):
         variable = player
     )
 
+
 LEQ = 3
 for player in range(1,9):
     prev_trigger = None
@@ -104,24 +106,11 @@ for player in range(1,9):
         comparison = LEQ
     )
 
-    trigger.new_effect.change_variable(
-        quantity = -200,
-        operation=Operation.SET,
-        variable = player + VAR2_OFFSET
-    )
-    
-
-    trigger.new_effect.modify_variable_by_variable(
-        variable2 = player,
-        operation=Operation.ADD,
-        variable = player + VAR2_OFFSET
-    )
-
     trigger.new_effect.modify_resource_by_variable(
         source_player = player,
         tribute_list = 32,
         operation=Operation.SET,
-        variable =  player + VAR2_OFFSET
+        variable =  player
     )
 
 
