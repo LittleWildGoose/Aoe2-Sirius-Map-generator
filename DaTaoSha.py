@@ -45,7 +45,7 @@ DAMAGE_VALUE = 10
 FLAG_ID = 600
 BLACK_UUID = 306
 WAIT_TIME = 300
-FIRST_TIME = 600 - WAIT_TIME
+FIRST_TIME = 600 
 
 # WOOD = 0
 # FOOD = 1
@@ -65,7 +65,7 @@ UPLIMIT = 500
 POP_HEAD = 200
 displayStr = "小野鹅的大逃杀\n \n"
 
-displayStr = displayStr + f"开局{(WAIT_TIME+FIRST_TIME)/60}分钟后开始刷圈 \n\n圈出现{WAIT_TIME/60}分钟后会刷下一个 \n新圈出现后在旧圈外的会开始掉血 \n"
+displayStr = displayStr + f"开局{(FIRST_TIME)/60}分钟后开始刷圈 \n\n圈出现{WAIT_TIME/60}分钟后会刷下一个 \n新圈出现后在旧圈外的会开始掉血 \n"
 
 
 displayStr += "触发制作：小野鹅"
@@ -174,8 +174,6 @@ for i in range(1, len(sizes)):
     trigger = trigger_manager.add_trigger(
         name = f"刷圈{i}", 
         enabled = False)
-
-    trigger.new_condition.timer(timer=WAIT_TIME)
 
     
     triggerForOut.new_effect.activate_trigger(
