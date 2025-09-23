@@ -7,7 +7,7 @@ import random
 
 input_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\blankda.aoe2scenario"
 
-output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀.aoe2scenario"
+output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_平山黑边.aoe2scenario"
 
 scenario = AoE2DEScenario.from_file(input_path)
 
@@ -15,6 +15,13 @@ trigger_manager = scenario.trigger_manager
 map_manager = scenario.map_manager
 
 MAP_SIZE = map_manager.map_size
+
+
+for x in range(0, MAP_SIZE):
+    for y in range(0, MAP_SIZE):
+        tile = map_manager.get_tile(x, y)
+        tile.elevation=0
+
 
 trigger_manager.remove_triggers(trigger_manager.trigger_display_order)
 
@@ -181,7 +188,7 @@ for i in range(1, len(sizes)):
     )
     
 
-    for x111 in range(cur_x1, cur_x2, 5):
+    for x111 in range(cur_x1, cur_x2, 3):
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
@@ -196,7 +203,7 @@ for i in range(1, len(sizes)):
             location_x = x111,
             location_y = cur_y2,
         )
-    for y111 in range(cur_y1, cur_y2, 5):
+    for y111 in range(cur_y1, cur_y2, 3):
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
@@ -222,37 +229,6 @@ for i in range(1, len(sizes)):
         triggerForOut.trigger_id,
     )
     
-    for x111 in range(cur_x1, cur_x2):
-        triggerForOut.new_effect.create_object(
-
-            object_list_unit_id = BLACK_UUID,
-            source_player = GAIA,
-            location_x = x111,
-            location_y = cur_y1,
-        )
-        triggerForOut.new_effect.create_object(
-
-            object_list_unit_id = BLACK_UUID,
-            source_player = GAIA,
-            location_x = x111,
-            location_y = cur_y2,
-        )
-    for y111 in range(cur_y1, cur_y2):
-        triggerForOut.new_effect.create_object(
-
-            object_list_unit_id = BLACK_UUID,
-            source_player = GAIA,
-            location_x = cur_x1,
-            location_y = y111,
-        )
-        triggerForOut.new_effect.create_object(
-
-            object_list_unit_id = BLACK_UUID,
-            source_player = GAIA,
-            location_x = cur_x2,
-            location_y = y111,
-        )
-
     triggerForOut.new_effect.kill_object(
         source_player = NPC,
         area_x1 = 0,
@@ -266,10 +242,32 @@ for i in range(1, len(sizes)):
         enabled = False,
         looping = 1)
 
-    for player in range(1,8):
+    delay = 2
+    for rec in rects:
+
+        delay += 1
+
+        triggerTemp = trigger_manager.add_trigger(
+            name = f"刷圈{i}outDelay{delay}", 
+            enabled = False)
+
+        triggerForOut.new_condition.timer(timer=delay)
+
+        for x111 in range(rec[0], rec[2]):
+            for y111 in range(rec[1], rec[3]):
+                triggerTemp.new_effect.create_object(
+                    object_list_unit_id = BLACK_UUID,
+                    source_player = GAIA,
+                    location_x = x111,
+                    location_y = y111,
+                )
+
+        triggerForOut.new_effect.activate_trigger(
+            triggerTemp.trigger_id,
+        )
 
 
-        for rec in rects:
+        for player in range(1,8):
             trigger.new_effect.damage_object(
                 quantity = DAMAGE_VALUE,
                 object_list_unit_id = None,
