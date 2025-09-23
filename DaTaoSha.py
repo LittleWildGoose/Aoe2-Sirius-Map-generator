@@ -251,10 +251,10 @@ for i in range(1, len(sizes)):
             name = f"刷圈{i}outDelay{delay}", 
             enabled = False)
 
-        triggerForOut.new_condition.timer(timer=delay)
+        triggerTemp.new_condition.timer(timer=delay)
 
-        for x111 in range(rec[0], rec[2]):
-            for y111 in range(rec[1], rec[3]):
+        for x111 in range(rec[0], rec[2]+1):
+            for y111 in range(rec[1], rec[3]+1):
                 triggerTemp.new_effect.create_object(
                     object_list_unit_id = BLACK_UUID,
                     source_player = GAIA,
