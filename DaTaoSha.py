@@ -9,6 +9,39 @@ input_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\r
 
 output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_平山黑边.aoe2scenario"
 
+def make_parent(child_x1, child_y1, child_x2, child_y2, parent_size, MAP_SIZE):
+    child_size = child_x2 - child_x1
+
+    min_x1 = max(0, child_x2 - parent_size)
+    max_x1 = min(MAP_SIZE - parent_size, child_x1)
+
+    min_y1 = max(0, child_y2 - parent_size)
+    max_y1 = min(MAP_SIZE - parent_size, child_y1)
+
+    px1 = random.randint(min_x1, max_x1)
+    py1 = random.randint(min_y1, max_y1)
+
+    return px1, py1, px1 + parent_size, py1 + parent_size
+
+
+def generate_squares(sizes, MAP_SIZE):
+    sizes = sorted(sizes)  # 小到大
+
+    # 随机最小圈
+    child_size = sizes[0]
+    x1 = random.randint(0, MAP_SIZE - child_size)
+    y1 = random.randint(0, MAP_SIZE - child_size)
+    x2, y2 = x1 + child_size, y1 + child_size
+    squares = [(x1, y1, x2, y2)]
+
+    # 逐层生成父圈
+    for parent_size in sizes[1:]:
+        x1, y1, x2, y2 = make_parent(x1, y1, x2, y2, parent_size, MAP_SIZE)
+        squares.append((x1, y1, x2, y2))
+
+    # 反转一下，保证顺序是从大到小（外圈→内圈）
+    return list(reversed(squares))
+
 scenario = AoE2DEScenario.from_file(input_path)
 
 trigger_manager = scenario.trigger_manager
@@ -145,36 +178,22 @@ triggerForOut = trigger_manager.add_trigger(
 triggerForOut.new_condition.timer(timer=FIRST_TIME)
 
 
-for i in range(1, len(sizes)):
-    parent_size = cur_x2 - cur_x1
-    child_size = sizes[i]
+pre_squares = generate_squares(sizes, MAP_SIZE)
 
-    margin = child_size // 2  # 保证能放下小方块
-    x = random.randint(cur_x1 + margin, cur_x2 - margin)
-    y = random.randint(cur_y1 + margin, cur_y2 - margin)
-
-    print([x,y,margin])
-
-    half = child_size // 2
-    inner_x1 = x - half
-    inner_y1 = y - half
-    inner_x2 = x + half
-    inner_y2 = y + half
+for i in range(1, len(pre_squares)):
+    cur_x1, cur_y1, cur_x2, cur_y2 = pre_squares[i-1]
+    inner_x1, inner_y1, inner_x2, inner_y2 = pre_squares[i]
 
     # 保存正方形
     all_squares.append(((inner_x1, inner_y1), (inner_x2, inner_y2)))
 
     # 四个矩形（父正方形 - 子正方形）
     rects = [
-        (cur_x1, inner_y2, cur_x2, cur_y2),   # 上
-        (cur_x1, cur_y1, cur_x2, inner_y1),   # 下
-        (cur_x1, inner_y1, inner_x1, inner_y2), # 左
-        (inner_x2, inner_y1, cur_x2, inner_y2)  # 右
+        (cur_x1, inner_y2, cur_x2, cur_y2),      # 上
+        (cur_x1, cur_y1, cur_x2, inner_y1),      # 下
+        (cur_x1, inner_y1, inner_x1, inner_y2),  # 左
+        (inner_x2, inner_y1, cur_x2, inner_y2)   # 右
     ]
-    all_rectangles.append(rects)
-
-    # 更新当前正方形，作为下一轮的父正方形
-    cur_x1, cur_y1, cur_x2, cur_y2 = inner_x1, inner_y1, inner_x2, inner_y2
 
     print(f"\n第{i}层正方形:", (inner_x1, inner_y1, inner_x2, inner_y2))
 
