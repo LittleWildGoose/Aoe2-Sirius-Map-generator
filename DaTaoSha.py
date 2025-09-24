@@ -82,10 +82,16 @@ for player in range(1,9):
 GAIA =0 
 NPC = 8
 DAMAGE_VALUE = 10
+GOOSE_ID = 1243
+
 FLAG_ID = 600
+FLARE_ID = 274
+FLARE_FOREVER_A_ID = 1689
 BLACK_UUID = 306
+
+FLARE_DIS = 5
 WAIT_TIME = 300
-FIRST_TIME = 600 
+FIRST_TIME = 600
 
 # WOOD = 0
 # FOOD = 1
@@ -127,6 +133,14 @@ trigger_toView = trigger_manager.add_trigger(
     name = " view all mapp " ,
     looping = 0)
 
+trigger_toView.new_effect.kill_object(
+    source_player = NPC,
+    area_x1 = 0,
+    area_y1	= 0,
+    area_x2 = MAP_SIZE -1,
+    area_y2	= MAP_SIZE -1,
+)
+
 for player in range(1,9):
     trigger_toView.new_effect.set_player_visibility(
         source_player = player,
@@ -139,14 +153,12 @@ for player in range(1,9):
         source_player = player,
         operation = Operation.SET)
 
-    trigger_toView.new_effect.kill_object(
-        source_player = NPC,
-        area_x1 = 0,
-        area_y1	= 0,
-        area_x2 = MAP_SIZE -1,
-        area_y2	= MAP_SIZE -1,
-    )
+
     
+    # trigger_toView.new_effect.enable_disable_object(
+    #     ource_player=player,
+    #     object_list_unit_id=GOOSE_ID,
+    #     enabled = True)
 
 
 X_MIN, Y_MIN = 0, 0
@@ -206,7 +218,7 @@ for i in range(1, len(pre_squares)):
         trigger.trigger_id,
     )
     
-
+    localCount = 0
     for x111 in range(cur_x1, cur_x2, 3):
         trigger.new_effect.create_object(
 
@@ -222,6 +234,23 @@ for i in range(1, len(pre_squares)):
             location_x = x111,
             location_y = cur_y2,
         )
+
+        localCount +=1
+        if localCount % FLARE_DIS==0:
+            trigger.new_effect.create_object(
+
+                object_list_unit_id = FLARE_FOREVER_A_ID,
+                source_player = NPC,
+                location_x = x111,
+                location_y = cur_y1,
+            )
+            trigger.new_effect.create_object(
+
+                object_list_unit_id = FLARE_FOREVER_A_ID,
+                source_player = NPC,
+                location_x = x111,
+                location_y = cur_y2,
+            )
     for y111 in range(cur_y1, cur_y2, 3):
         trigger.new_effect.create_object(
 
@@ -237,6 +266,24 @@ for i in range(1, len(pre_squares)):
             location_x = cur_x2,
             location_y = y111,
         )
+
+        localCount +=1
+        if localCount % FLARE_DIS==0:
+            trigger.new_effect.create_object(
+
+                object_list_unit_id = FLARE_FOREVER_A_ID,
+                source_player = NPC,
+                location_x = cur_x1,
+                location_y = y111,
+            )
+            trigger.new_effect.create_object(
+
+                object_list_unit_id = FLARE_FOREVER_A_ID,
+                source_player = NPC,
+                location_x = cur_x2,
+                location_y = y111,
+            )
+
 
     triggerForOut = trigger_manager.add_trigger(
         name = f"刷圈{i}out", 
