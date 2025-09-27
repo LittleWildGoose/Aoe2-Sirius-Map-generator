@@ -245,14 +245,14 @@ for i in range(1, len(pre_squares)):
             object_list_unit_id = FLAG_ID,
             source_player = NPC,
             location_x = x111,
-            location_y = cur_y1,
+            location_y = inner_y1,
         )
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
             source_player = NPC,
             location_x = x111,
-            location_y = cur_y2,
+            location_y = inner_y2,
         )
 
         localCount +=1
@@ -262,28 +262,28 @@ for i in range(1, len(pre_squares)):
                 object_list_unit_id = FLARE_FOREVER_A_ID,
                 source_player = NPC,
                 location_x = x111,
-                location_y = cur_y1,
+                location_y = inner_y1,
             )
             trigger.new_effect.create_object(
 
                 object_list_unit_id = FLARE_FOREVER_A_ID,
                 source_player = NPC,
                 location_x = x111,
-                location_y = cur_y2,
+                location_y = inner_y2,
             )
     for y111 in range(inner_y1, inner_y2, 3):
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
             source_player = NPC,
-            location_x = cur_x1,
+            location_x = inner_x1,
             location_y = y111,
         )
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
             source_player = NPC,
-            location_x = cur_x2,
+            location_x = inner_x2,
             location_y = y111,
         )
 
@@ -293,14 +293,14 @@ for i in range(1, len(pre_squares)):
 
                 object_list_unit_id = FLARE_FOREVER_A_ID,
                 source_player = NPC,
-                location_x = cur_x1,
+                location_x = inner_x1,
                 location_y = y111,
             )
             trigger.new_effect.create_object(
 
                 object_list_unit_id = FLARE_FOREVER_A_ID,
                 source_player = NPC,
-                location_x = cur_x2,
+                location_x = inner_x2,
                 location_y = y111,
             )
 
