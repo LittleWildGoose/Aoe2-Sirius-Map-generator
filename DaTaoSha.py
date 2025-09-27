@@ -239,7 +239,7 @@ for i in range(1, len(pre_squares)):
     )
     
     localCount = 0
-    for x111 in range(cur_x1, cur_x2, 3):
+    for x111 in range(inner_x1, inner_x2, 3):
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
@@ -271,7 +271,7 @@ for i in range(1, len(pre_squares)):
                 location_x = x111,
                 location_y = cur_y2,
             )
-    for y111 in range(cur_y1, cur_y2, 3):
+    for y111 in range(inner_y1, inner_y2, 3):
         trigger.new_effect.create_object(
 
             object_list_unit_id = FLAG_ID,
