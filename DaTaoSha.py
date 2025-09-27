@@ -1,13 +1,15 @@
 from AoE2ScenarioParser.scenarios.aoe2_de_scenario import AoE2DEScenario
 from utils import *
 from AoE2ScenarioParser.datasets.trigger_lists import Age, Operation, DiplomacyState, VisibilityState
+from AoE2ScenarioParser.datasets.buildings import BuildingInfo
 from AoE2ScenarioParser.datasets.techs import TechInfo
 from AoE2ScenarioParser.objects.support.trigger_select import TriggerSelect, TS
 import random
 
+
 input_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\blankda.aoe2scenario"
 
-output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_平山黑边.aoe2scenario"
+output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_随机缩圈_TC养鹅.aoe2scenario"
 
 def make_parent(child_x1, child_y1, child_x2, child_y2, parent_size, MAP_SIZE):
     child_size = child_x2 - child_x1
@@ -85,6 +87,7 @@ GAIA =0
 NPC = 8
 DAMAGE_VALUE = 10
 GOOSE_ID = 1243
+KEY_E_ID = 1007
 
 FLAG_ID = 600
 FLARE_ID = 274
@@ -156,12 +159,27 @@ for player in range(1,9):
         operation = Operation.SET)
 
 
-    
-    # trigger_toView.new_effect.enable_disable_object(
-    #     ource_player=player,
-    #     object_list_unit_id=GOOSE_ID,
-    #     enabled = True)
+    trigger_toView.new_effect.add_train_location(
+        source_player=player,
+        object_list_unit_id=GOOSE_ID,
+        object_list_unit_id_2 = BuildingInfo.TOWN_CENTER.ID,
+        button_location = 3,
+        hotkey = KEY_E_ID)
 
+    trigger_toView.new_effect.enable_disable_object(
+        source_player=player,
+        object_list_unit_id=GOOSE_ID,
+        enabled = True)
+
+    trigger_toView.new_effect.change_train_location(
+        source_player=player,
+        object_list_unit_id=GOOSE_ID,
+        button_location = 3)
+
+    trigger_toView.new_effect.change_object_description(
+        source_player=player,
+        object_list_unit_id=GOOSE_ID,
+        message = "25肉养一只小野鹅，快捷键E")
 
 X_MIN, Y_MIN = 0, 0
 
