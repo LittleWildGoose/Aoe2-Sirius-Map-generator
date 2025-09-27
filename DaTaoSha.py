@@ -42,6 +42,8 @@ def generate_squares(sizes, MAP_SIZE):
     # 反转一下，保证顺序是从大到小（外圈→内圈）
     return list(reversed(squares))
 
+new_file = clone_file(__file__)
+
 scenario = AoE2DEScenario.from_file(input_path)
 
 trigger_manager = scenario.trigger_manager

@@ -1,4 +1,70 @@
 from AoE2ScenarioParser.datasets.terrains import TerrainId
+import argparse
+import sys
+from pathlib import Path
+from datetime import datetime
+
+
+from pathlib import Path
+from datetime import datetime
+import sys
+
+from pathlib import Path
+from datetime import datetime
+import hashlib
+
+def content_hash(text: str) -> str:
+    """对字符串内容做哈希，统一换行符为 \n"""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+def file_hash(path: Path) -> str:
+    """读取文件内容并计算哈希（统一换行符）"""
+    text = path.read_text(encoding="utf-8")
+    return content_hash(text)
+
+
+def clone_file(src_path: str):
+    """
+    复制指定文件并生成一个新的副本，
+    并在副本中注释掉 clone_file 的导入和调用。
+    """
+    src = Path(src_path).resolve()
+    if not src.exists():
+        raise FileNotFoundError(f"源文件不存在: {src}")
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    tgt = src.with_name(f"小野鹅的{src.stem}_copy_{timestamp}.py")
+
+    # 读取源文件
+    lines = src.read_text(encoding="utf-8").splitlines()
+
+    new_lines = []
+    for line in lines:
+        if "from utils import *" in line.strip():
+            new_lines.append(f"# {line}")  # 注释掉
+        elif "new_file = clone_file(__file__)" in line:
+            new_lines.append(f"# {line}")  # 注释掉
+        else:
+            new_lines.append(line)
+
+
+    new_content = "\n".join(new_lines) + "\n"
+
+    # 计算新内容的 hash
+    new_hash = content_hash(new_content)
+
+    # 检查当前目录下是否已有相同内容的副本
+    for f in src.parent.glob(f"*.py"):
+        if file_hash(f) == new_hash:
+            print(f"跳过生成，已有内容相同的文件: {f}")
+            return f
+
+    tgt.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+
+
+    return tgt
+
 
 TREE_ID = 399
 GOLD_ID = 66
