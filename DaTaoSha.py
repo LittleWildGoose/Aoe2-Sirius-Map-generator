@@ -6,10 +6,11 @@ from AoE2ScenarioParser.datasets.techs import TechInfo
 from AoE2ScenarioParser.objects.support.trigger_select import TriggerSelect, TS
 import random
 
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 input_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\blankda.aoe2scenario"
 
-output_path = "C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_随机缩圈_TC养鹅.aoe2scenario"
+output_path = f"C:\\Users\\ramse\\Games\\Age of Empires 2 DE\\76561198098693108\\resources\\_common\\scenario\\大逃杀_随机缩圈_TC养鹅_{timestamp}.aoe2scenario"
 
 def make_parent(child_x1, child_y1, child_x2, child_y2, parent_size, MAP_SIZE):
     child_size = child_x2 - child_x1
